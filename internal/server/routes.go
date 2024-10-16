@@ -4,14 +4,19 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"vendorService/internal/middleware"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
+	r.Use(gin.Logger())
+
 	r.GET("/", s.HelloWorldHandler)
 
-	r.GET("/health", s.healthHandler)
+	r.Use(middleware.ErrorHandlerMiddleware)
+	r.NoRoute(middleware.HandleNotFound)
 
 	return r
 }
@@ -21,8 +26,4 @@ func (s *Server) HelloWorldHandler(c *gin.Context) {
 	resp["message"] = "Hello World"
 
 	c.JSON(http.StatusOK, resp)
-}
-
-func (s *Server) healthHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, s.db.Health())
 }

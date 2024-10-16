@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package vendor;
+
+// Specify the Go package
+option go_package = "vendorService/proto;vendor";
+
+// Vendor service definition
+service VendorService {
+    rpc GetVendor (VendorRequest) returns (VendorResponse);
+    rpc CreateVendor (CreateVendorRequest) returns (CreateVendorResponse); 
+}
+
+// Messages
+message VendorRequest {
+    string vendor_id = 1;
+}
+
+message VendorResponse {
+    string name = 1;
+    string email = 2;
+}
+
+message CreateVendorRequest {
+    string firstName = 1;
+    string lastName = 2;
+    string password = 3;
+    string email = 4;
+}
+
+message CreateVendorResponse {  
+    string message = 1;
+}
