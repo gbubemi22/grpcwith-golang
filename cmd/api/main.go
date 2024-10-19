@@ -1,16 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"go.uber.org/zap"
+
 	"vendorService/internal/server"
 )
 
 func main() {
+	// Initialize zap logger
+	logger, _ := zap.NewProduction()
+	zap.ReplaceGlobals(logger)
+	defer logger.Sync()
 
-	server := server.NewServer()
+	// Create gRPC server
+	grpcServer := server.NewServer()
 
-	err := server.ListenAndServe()
-	if err != nil {
-		panic(fmt.Sprintf("cannot start server: %s", err))
-	}
+	// Initialize and start the gRPC server
+	srv := &server.Server{}
+	srv.StartGRPCServer(grpcServer)
 }

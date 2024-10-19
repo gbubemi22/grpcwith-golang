@@ -3,6 +3,10 @@
 # Build the application
 all: build
 
+proto:
+	@protoc --go_out=. --go-grpc_out=. proto/vendor.proto
+
+
 build:
 	@echo "Building..."
 	
